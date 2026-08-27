@@ -283,12 +283,16 @@
 
 <script>
 /* =================================================================
-   EDIT ME  ---  paste your Google Apps Script Web App URL here.
-   Setup steps are in SETUP.md next to this file. Looks like:
-   https://script.google.com/macros/s/AKfycb...../exec
-   Leave it as "" and signups only save in the visitor's browser.
+   Signups go to Supabase (project "sauna-race", eu-north-1).
+   This key is the PUBLISHABLE key and is meant to be public. Row
+   level security lets anon INSERT into signups and nothing else,
+   so this page can add a signup but can't read the list back.
+   To see signups:  supabase --project-ref khqxsemkfoyuhzwfavdt ...
+   or the table editor in the Supabase dashboard.
    ================================================================= */
-const FORM_ENDPOINT = "";
+const SUPABASE_URL  = "https://khqxsemkfoyuhzwfavdt.supabase.co";
+const SUPABASE_KEY  = "sb_publishable_vsVF2cpSLlAG19e7_3hfsw_1eKBMWaF";
+const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
 
 /* ---- countdown (hours / minutes / seconds) ---- */
 (function(){
@@ -349,10 +353,20 @@ const FORM_ENDPOINT = "";
       try {
         const res = await fetch(FORM_ENDPOINT, {
           method: 'POST',
-          headers: {'Content-Type':'text/plain;charset=utf-8'}, // simple request: no CORS preflight
-          body: JSON.stringify(data)
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            name:  data.name,
+            email: data.email,
+            phone: data.phone,
+            ready: data.ready
+          })
         });
-        if (!res.ok) throw new Error(res.status);
+        if (!res.ok) throw new Error(res.status + ' ' + await res.text());
       } catch(err){
         btn.disabled = false;
         btn.textContent = 'Count me in';

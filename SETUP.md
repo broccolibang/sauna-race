@@ -1,62 +1,50 @@
-# Connecting the signup form to your Google Sheet
+# Signups
 
-Your sheet is already made and already has the header row:
-**Sauna Race Signups** — https://docs.google.com/spreadsheets/d/1squvne685dwjdVNDUyh_M5CScddaoC49bvxerZKKvio/edit
+Signups go straight into Supabase. Nothing to set up — it's already wired and tested.
 
-This part has to be done in the browser (Google won't let a script deploy itself). Takes about 2 minutes.
+| | |
+|---|---|
+| Project | **sauna-race** (`khqxsemkfoyuhzwfavdt`), region `eu-north-1` (Stockholm) |
+| Org | hekevinb-gmailcom's projects |
+| Table | `public.signups` |
+| Dashboard | https://supabase.com/dashboard/project/khqxsemkfoyuhzwfavdt/editor |
 
-## 1. Open the script editor
-In the sheet: **Extensions → Apps Script**. Delete whatever code is in the editor.
+## Seeing who signed up
 
-## 2. Paste this in
+Easiest is the table editor link above. From the terminal:
 
-```javascript
-function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.waitLock(20000);
-  try {
-    var d = JSON.parse(e.postData.contents);
-    SpreadsheetApp.getActiveSpreadsheet()
-      .getSheets()[0]
-      .appendRow([
-        new Date(),
-        d.name  || '',
-        d.email || '',
-        d.phone || '',
-        d.ready ? 'YES' : 'no'
-      ]);
-    return ContentService
-      .createTextOutput(JSON.stringify({ok: true}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ok: false, error: String(err)}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}
+```sh
+SECRET=$(supabase projects api-keys --project-ref khqxsemkfoyuhzwfavdt \
+          --output json --reveal \
+          | python3 -c "import json,sys;[print(k['api_key']) for k in json.load(sys.stdin) if k['api_key'].startswith('sb_secret_')]")
+
+curl -s "https://khqxsemkfoyuhzwfavdt.supabase.co/rest/v1/signups?select=*&order=created_at" \
+     -H "apikey: $SECRET" -H "Authorization: Bearer $SECRET" | python3 -m json.tool
 ```
 
-Hit the save icon.
+## How it's wired
 
-## 3. Deploy it
-**Deploy → New deployment** → click the gear next to "Select type" → **Web app**.
+`index.html` posts to the PostgREST endpoint with the **publishable** key. That key is
+public on purpose — it's in a public repo and visible in the page source, which is fine:
 
-Set these two exactly:
-- **Execute as:** Me
-- **Who has access:** **Anyone**  ← this one matters, "Anyone with Google account" will silently reject signups
+- Row level security is on, and the only policy is `insert` for `anon`.
+- There is no select/update/delete policy, so that key can add a signup but
+  **cannot read the list back, edit it, or delete it.** Verified: a `select` with the
+  publishable key returns `[]` even when rows exist.
+- The insert policy also validates on the server — name 1-100 chars, a real-looking
+  email, phone 5-40 chars — so the checks aren't only in the browser.
 
-Click **Deploy**, then **Authorize access**. Google will warn you the app isn't verified: click
-**Advanced → Go to (project name)** and allow it. That warning is expected, it's your own script.
+Reading requires the **secret** key, which is not in this repo.
 
-## 4. Copy the URL
-You'll get a **Web app URL** ending in `/exec`. Copy it.
+## Changing the table
 
-## 5. Give it to me
-Paste it into the chat and I'll drop it into the site and redeploy. Or do it yourself:
-open `index.html`, find `const FORM_ENDPOINT = "";` near the bottom, and put the URL between the quotes.
+Migrations live in `supabase/migrations/`. After editing:
 
-## Testing it
-Submit the form once. A row should appear in the sheet within a couple seconds.
-If nothing shows up, the usual cause is step 3's "Who has access" not being set to **Anyone**.
+```sh
+supabase db push
+```
+
+## Local backup
+
+The page also stashes each signup in the visitor's own `localStorage` before posting.
+That's a belt-and-braces thing for network hiccups, not something you can read.
