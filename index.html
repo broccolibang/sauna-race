@@ -4,400 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Great Sauna Race</title>
-<meta name="description" content="6 friends, 24 hours, one free sauna. Race us Friday, August 28th at 12:00 PM at the Eiran ranta stairs, Eira, Helsinki.">
-<meta property="og:title" content="The Great Sauna Race">
-<meta property="og:description" content="Be the first to finish the race and you win the sauna.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="us.jpg">
+<meta name="description" content="6 friends, 24 hours, one free sauna. Sign up on Luma.">
 <meta name="theme-color" content="#14100E">
+<link rel="canonical" href="https://luma.com/vwvmpjfg">
+<!-- GitHub Pages can't serve a real 301, so this is the three-layer version:
+     JS replace (instant, leaves no back-button trap), meta refresh (JS off),
+     and a visible link (both blocked). -->
+<meta http-equiv="refresh" content="0; url=https://luma.com/vwvmpjfg">
+<script>location.replace("https://luma.com/vwvmpjfg");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  /* ---------------------------------------------------------------
-     THE GREAT SAUNA RACE
-     Things you'll want to edit:
-       - LOCATION: search "Eiran ranta" (4 spots) / coords in the map links
-       - SAUNA PHOTO: search "SAUNA PHOTO"
-       - FORM: search "FORM_ENDPOINT" (see SETUP.md)
-  --------------------------------------------------------------- */
   :root{
-    --ink:        #FFF3E4;
-    --ink-dim:    #C9AF97;
-    --ember:      #FF6B2C;
-    --ember-deep: #D93B0B;
-    --cedar:      #C98A4B;
-    --char:       #14100E;
-    --char-2:     #1E1815;
-    --line:       rgba(201,138,75,.28);
-    --display: 'Anton', 'Haettenschweiler', 'Impact', sans-serif;
-    --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ink:#FFF3E4; --ink-dim:#C9AF97; --ember:#FF6B2C; --char:#14100E;
+    --display:'Anton','Haettenschweiler','Impact',sans-serif;
+    --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
   body{
-    margin:0; background:var(--char); color:var(--ink);
-    font-family:var(--body); font-size:17px; line-height:1.6;
-    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    margin:0; min-height:100svh; background:var(--char); color:var(--ink);
+    font-family:var(--body); display:flex; align-items:center;
+    justify-content:center; text-align:center; padding:32px;
   }
-  body::before{ /* heat glow */
-    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-    background:
-      radial-gradient(60rem 40rem at 50% -10%, rgba(255,107,44,.20), transparent 65%),
-      radial-gradient(40rem 30rem at 10% 40%, rgba(217,59,11,.10), transparent 70%);
+  h1{
+    font-family:var(--display); text-transform:uppercase; font-weight:400;
+    font-size:clamp(2rem,9vw,3.4rem); line-height:.95; margin:0 0 18px;
   }
-  .wrap{position:relative; z-index:1; max-width:780px; margin:0 auto;
-        padding:0 clamp(18px, 5vw, 24px)}
-  section{padding:clamp(44px, 9vw, 68px) 0}
-
-  /* ---------- type ---------- */
-  h1,h2{font-family:var(--display); font-weight:400; text-transform:uppercase;
-        letter-spacing:.005em; line-height:.9; margin:0}
-  h1{font-size:clamp(3rem, 13vw, 6.4rem)}
-  h2{font-size:clamp(1.9rem, 7vw, 3rem)}
-  .eyebrow{
-    font-family:var(--body); font-weight:700;
-    font-size:clamp(.66rem,2.6vw,.76rem); letter-spacing:.18em;
-    text-transform:uppercase; color:var(--ember); margin:0 0 14px;
+  p{color:var(--ink-dim); margin:0 0 26px; line-height:1.6}
+  a.go{
+    display:inline-block; background:var(--ember); color:var(--char);
+    font-family:var(--display); text-transform:uppercase; letter-spacing:.04em;
+    font-size:1.15rem; text-decoration:none; padding:15px 30px; border-radius:2px;
   }
-  .lead{font-size:clamp(1.02rem,3.6vw,1.22rem); color:var(--ink-dim); max-width:34em; margin:20px 0 0}
-  .lead strong{color:var(--ink); font-weight:600}
-
-  /* ---------- hero ---------- */
-  .hero{padding-top:clamp(40px,10vw,60px)}
-  .hero h1 span{display:block}
-  .hero h1 .hot{
-    background:linear-gradient(180deg,#FFC46B 0%,var(--ember) 55%,var(--ember-deep) 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-
-  /* ---------- photos ---------- */
-  .photo{
-    max-width:480px; margin:30px auto 0;
-    border-radius:16px; overflow:hidden;
-    border:1px solid var(--line); background:var(--char-2);
-  }
-  .photo img{display:block; width:100%; height:auto}
-  .caption{color:var(--ink-dim); font-size:.85rem; margin:10px 0 0; text-align:center}
-
-  /* ---------- when / where / prize strip ---------- */
-  .strip{
-    display:flex; margin:28px 0 0;
-    background:var(--char-2); border:1px solid var(--line); border-radius:14px;
-    overflow:hidden;
-  }
-  /* NB: child selectors. `.strip div` also matched the .k/.v divs inside each
-     cell, giving them the cell's padding and a stray divider of their own. */
-  .strip > div{flex:1; padding:14px 10px; text-align:center; min-width:0}
-  .strip > div + div{border-left:1px solid var(--line)}
-  .strip .k{
-    font-size:clamp(.55rem,2.2vw,.63rem); letter-spacing:.16em; text-transform:uppercase;
-    color:var(--cedar); font-weight:700; line-height:1;
-  }
-  .strip .v{
-    font-family:var(--display); text-transform:uppercase; line-height:1.15;
-    font-size:clamp(.82rem,3.9vw,1.2rem); margin-top:6px;
-  }
-  /* the date is the one value that must not re-wrap on narrow phones */
-  .strip .v.when{white-space:nowrap}
-  .tz{font-size:.72rem; color:var(--ink-dim); text-align:center;
-      margin:9px 0 0; letter-spacing:.03em; line-height:1.65}
-  .maplink{color:var(--cedar); text-decoration:none;
-           border-bottom:1px solid var(--line)}
-  /* the map link is the one thing here people actually tap */
-  .tz .maplink{font-size:1rem; font-weight:600; letter-spacing:0}
-  .maplink:hover{color:var(--ember); border-bottom-color:var(--ember)}
-
-  /* ---------- countdown ---------- */
-  .countdown{display:flex; gap:8px; margin-top:14px}
-  .unit{
-    background:linear-gradient(180deg, rgba(255,107,44,.14), rgba(255,107,44,.04));
-    border:1px solid var(--line); border-radius:12px;
-    padding:12px 4px; text-align:center; flex:1; min-width:0;
-  }
-  .unit b{display:block; font-family:var(--display);
-          font-size:clamp(1.7rem,7.5vw,2.2rem); line-height:1; color:var(--ink)}
-  .unit small{
-    display:block; margin-top:5px;
-    font-size:clamp(.52rem,2.1vw,.6rem); letter-spacing:.15em;
-    text-transform:uppercase; color:var(--cedar); font-weight:700;
-  }
-
-  /* ---------- buttons ---------- */
-  .btn{
-    display:inline-block; background:var(--ember); color:#1A0C05; text-decoration:none;
-    font-weight:700; font-size:1rem; letter-spacing:.02em;
-    padding:16px 30px; border-radius:999px; border:0; cursor:pointer;
-    transition:transform .12s ease, background .12s ease;
-    -webkit-tap-highlight-color:transparent; touch-action:manipulation;
-  }
-  .btn:hover{background:#FF8347}
-  .btn:active{transform:scale(.985)}
-  .btn.block{display:block; width:100%; font-size:1.05rem; padding:18px}
-  .btn:disabled{opacity:.6; cursor:wait}
-  .hero .btn{margin-top:24px; width:100%; text-align:center}
-  @media (min-width:560px){ .hero .btn{width:auto; display:inline-block} }
-
-  /* ---------- form ---------- */
-  .signup{
-    background:var(--char-2); border:1px solid var(--line); border-radius:18px;
-    padding:clamp(24px,6vw,34px) clamp(20px,5vw,30px);
-  }
-  .field{margin-top:16px}
-  label{display:block; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase;
-        color:var(--cedar); font-weight:700; margin-bottom:7px}
-  input[type=text],input[type=email],input[type=tel]{
-    width:100%; background:#0F0C0A; border:1px solid var(--line); border-radius:11px;
-    padding:15px 16px; color:var(--ink); font-family:var(--body);
-    font-size:16px; /* 16px stops iOS Safari zooming on focus */
-  }
-  input::placeholder{color:#6E5B4C}
-  input:focus{outline:none; border-color:var(--ember); box-shadow:0 0 0 3px rgba(255,107,44,.16)}
-  .check{
-    display:flex; gap:13px; align-items:center; margin-top:22px; cursor:pointer;
-    background:#0F0C0A; border:1px solid var(--line); border-radius:11px; padding:16px;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .check input{width:24px; height:24px; accent-color:var(--ember); flex:0 0 auto; cursor:pointer}
-  .check span{
-    font-family:var(--display); text-transform:uppercase;
-    font-size:clamp(.95rem,3.6vw,1.05rem); letter-spacing:.02em; line-height:1.15;
-  }
-  .check.waiver{margin-top:12px; align-items:flex-start}
-  .check.waiver span{
-    font-family:var(--body); text-transform:none; font-weight:500;
-    font-size:.93rem; line-height:1.4; letter-spacing:0; color:var(--ink-dim);
-    padding-top:2px;
-  }
-  .signup .btn{margin-top:22px}
-  .msg{margin-top:14px; font-size:.93rem; display:none}
-  .msg.show{display:block}
-  .msg.err{color:#FF8B6B}
-  .done{text-align:center; padding:8px 0}
-  .done h3{font-family:var(--display); text-transform:uppercase; font-size:1.9rem;
-           margin:0 0 6px; font-weight:400}
-  .done p{color:var(--ink-dim); margin:0}
-
-  footer{border-top:1px solid var(--line); padding:28px 0 48px;
-         color:var(--ink-dim); font-size:.82rem; text-align:center; line-height:1.7}
 </style>
 </head>
 <body>
-
-<div class="wrap">
-
-  <!-- ============ HERO ============ -->
-  <section class="hero">
-    <h1>
-      <span>The Great</span>
-      <span class="hot">Sauna Race</span>
-    </h1>
-    <p class="lead">
-      Hi, we're 6 friends doing a 24 hour challenge: build a
-      <strong>free sauna</strong>. Be the first to finish the race and
-      <strong>you win it</strong>.
-    </p>
-
-    <!-- photo sits above the countdown -->
-    <div class="photo">
-      <img src="us.jpg" alt="The six of us" width="1600" height="1199">
-    </div>
-    <p class="caption">6 friends who are building a sauna.</p>
-
-    <!--
-      SAUNA PHOTO: when you've got a shot of the sauna, drop it in this folder
-      as sauna.jpg and uncomment the block below.
-
-    <div class="photo">
-      <img src="sauna.jpg" alt="The sauna" width="1600" height="1200">
-    </div>
-    <p class="caption">The prize.</p>
-    -->
-
-    <div class="strip">
-      <div>
-        <div class="k">When</div>
-        <div class="v when">Fri Aug 28<br>12:00 PM</div>
-      </div>
-      <div>
-        <div class="k">Where</div>
-        <div class="v">Eiran ranta<br>Stairs</div>
-      </div>
-      <div>
-        <div class="k">Prize</div>
-        <div class="v">The<br>Sauna</div>
-      </div>
-    </div>
-    <p class="tz">
-      <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=60.154789%2C24.934626"
-         target="_blank" rel="noopener">Open in Maps &nearr;</a>
-      &middot; Helsinki time
-    </p>
-
-    <div class="countdown" id="countdown" data-race="2026-08-28T12:00:00+03:00">
-      <div class="unit"><b id="cd-h">--</b><small>Hours</small></div>
-      <div class="unit"><b id="cd-m">--</b><small>Minutes</small></div>
-      <div class="unit"><b id="cd-s">--</b><small>Seconds</small></div>
-    </div>
-
-    <a class="btn" href="#signup">Sign me up &rarr;</a>
-  </section>
-
-  <!-- ============ SIGNUP ============ -->
-  <section id="signup">
-    <div class="signup">
-      <div id="signup-live">
-      <p class="eyebrow">Sign up</p>
-      <h2>Claim your<br>starting spot</h2>
-
-      <form id="form" novalidate>
-        <div class="field">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Your name"
-                 autocomplete="name" autocapitalize="words" required>
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@email.com"
-                 autocomplete="email" autocapitalize="off" autocorrect="off"
-                 inputmode="email" required>
-        </div>
-        <div class="field">
-          <label for="phone">Phone number</label>
-          <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555"
-                 autocomplete="tel" inputmode="tel" required>
-        </div>
-
-        <label class="check" for="ready">
-          <input id="ready" name="ready" type="checkbox" required>
-          <span>I'm ready to win a free sauna</span>
-        </label>
-
-        <label class="check waiver" for="waiver">
-          <input id="waiver" name="waiver" type="checkbox" required>
-          <span>I am participating on my own accord, and I release all liability</span>
-        </label>
-
-        <button class="btn block" type="submit" id="submit">Count me in</button>
-        <p class="msg err" id="msg"></p>
-      </form>
-      </div><!-- /#signup-live -->
-
-      <div class="done" id="done" style="display:none">
-        <h3>You're in</h3>
-        <p>Friday at noon at the Eiran ranta / Eira stranden stairs. We'll email you the details. Bring a towel.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    The Great Sauna Race<br>
-    Friday, August 28 &middot; 12:00 PM Helsinki time<br>
-    <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=60.154789%2C24.934626"
-       target="_blank" rel="noopener">Eiran ranta / Eira stranden Stairs, Eira, 00150 Helsinki &nearr;</a>
-  </footer>
-</div>
-
-<script>
-/* =================================================================
-   Signups go to Supabase (project "sauna-race", eu-north-1).
-   This key is the PUBLISHABLE key and is meant to be public. Row
-   level security lets anon INSERT into signups and nothing else,
-   so this page can add a signup but can't read the list back.
-   To see signups:  supabase --project-ref khqxsemkfoyuhzwfavdt ...
-   or the table editor in the Supabase dashboard.
-   ================================================================= */
-const SUPABASE_URL  = "https://khqxsemkfoyuhzwfavdt.supabase.co";
-const SUPABASE_KEY  = "sb_publishable_vsVF2cpSLlAG19e7_3hfsw_1eKBMWaF";
-const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
-
-/* ---- countdown (hours / minutes / seconds) ---- */
-(function(){
-  const el = document.getElementById('countdown');
-  const target = new Date(el.dataset.race).getTime();
-  const pad = n => String(n).padStart(2,'0');
-  function tick(){
-    const diff = target - Date.now();
-    if (diff <= 0){
-      el.innerHTML = '<div class="unit" style="flex:1"><b>GO!</b><small>The race is on</small></div>';
-      return;
-    }
-    const s = Math.floor(diff/1000);
-    document.getElementById('cd-h').textContent = pad(Math.floor(s/3600));
-    document.getElementById('cd-m').textContent = pad(Math.floor(s%3600/60));
-    document.getElementById('cd-s').textContent = pad(s%60);
-    setTimeout(tick, 1000);
-  }
-  tick();
-})();
-
-/* ---- signup ---- */
-(function(){
-  const form = document.getElementById('form');
-  const msg  = document.getElementById('msg');
-  const btn  = document.getElementById('submit');
-
-  function fail(text){ msg.textContent = text; msg.classList.add('show'); }
-
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    msg.classList.remove('show');
-
-    const data = {
-      name:  form.name.value.trim(),
-      email: form.email.value.trim(),
-      phone: form.phone.value.trim(),
-      ready: form.ready.checked,
-      waiver: form.waiver.checked,
-      signed_up_at: new Date().toISOString()
-    };
-
-    if (!data.name) return fail('We need a name to put on the starting line.');
-    if (!/^\S+@\S+\.\S+$/.test(data.email)) return fail('That email looks off. Mind checking it?');
-    if (data.phone.replace(/\D/g,'').length < 7) return fail('That phone number looks too short.');
-    if (!data.ready) return fail('You have to check the box. Are you ready to win a free sauna or not?');
-    if (!data.waiver) return fail('You need to accept the liability release to take part.');
-
-    btn.disabled = true;
-    btn.textContent = 'Signing you up...';
-
-    // Local backup so nothing is lost if the network hiccups.
-    try {
-      const saved = JSON.parse(localStorage.getItem('sauna-signups') || '[]');
-      saved.push(data);
-      localStorage.setItem('sauna-signups', JSON.stringify(saved));
-    } catch(_){}
-
-    if (FORM_ENDPOINT){
-      try {
-        const res = await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_KEY,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            name:  data.name,
-            email: data.email,
-            phone: data.phone,
-            ready: data.ready,
-            waiver: data.waiver
-          })
-        });
-        if (!res.ok) throw new Error(res.status + ' ' + await res.text());
-      } catch(err){
-        btn.disabled = false;
-        btn.textContent = 'Count me in';
-        return fail('Something broke on our end. Try again in a second?');
-      }
-    }
-
-    document.getElementById('signup-live').style.display = 'none';
-    document.getElementById('done').style.display = 'block';
-  });
-})();
-</script>
+  <main>
+    <h1>The Great<br>Sauna Race</h1>
+    <p>We've moved sign-ups to Luma.<br>Taking you there now.</p>
+    <a class="go" href="https://luma.com/vwvmpjfg">Go to the sign-up page &nearr;</a>
+  </main>
 </body>
 </html>
