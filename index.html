@@ -86,15 +86,17 @@
     background:var(--char-2); border:1px solid var(--line); border-radius:14px;
     overflow:hidden;
   }
-  .strip div{flex:1; padding:13px 10px; text-align:center; min-width:0}
-  .strip div + div{border-left:1px solid var(--line)}
+  /* NB: child selectors. `.strip div` also matched the .k/.v divs inside each
+     cell, giving them the cell's padding and a stray divider of their own. */
+  .strip > div{flex:1; padding:14px 10px; text-align:center; min-width:0}
+  .strip > div + div{border-left:1px solid var(--line)}
   .strip .k{
     font-size:clamp(.55rem,2.2vw,.63rem); letter-spacing:.16em; text-transform:uppercase;
-    color:var(--cedar); font-weight:700;
+    color:var(--cedar); font-weight:700; line-height:1;
   }
   .strip .v{
-    font-family:var(--display); text-transform:uppercase; line-height:1.05;
-    font-size:clamp(.82rem,3.9vw,1.2rem); margin-top:5px;
+    font-family:var(--display); text-transform:uppercase; line-height:1.15;
+    font-size:clamp(.82rem,3.9vw,1.2rem); margin-top:6px;
   }
   /* the date is the one value that must not re-wrap on narrow phones */
   .strip .v.when{white-space:nowrap}
@@ -220,8 +222,8 @@
     </div>
     <p class="tz">
       <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=60.154789%2C24.934626"
-         target="_blank" rel="noopener">Eiran ranta / Eira stranden Stairs, Eira, 00150 Helsinki &nearr;</a><br>
-      60.154789, 24.934626 &middot; all times Helsinki (EEST)
+         target="_blank" rel="noopener">Open in Maps &nearr;</a>
+      &middot; Helsinki time
     </p>
 
     <div class="countdown" id="countdown" data-race="2026-08-28T12:00:00+03:00">
