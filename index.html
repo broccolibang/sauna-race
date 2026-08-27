@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Great Sauna Race</title>
+<meta name="description" content="Five friends. Twenty four hours. One free sauna. Race us on Friday, August 28th at 12:00 PM.">
+<meta property="og:title" content="The Great Sauna Race">
+<meta property="og:description" content="Be the first to finish the race and you win the sauna.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------------------------------------------------------------
+     THE GREAT SAUNA RACE
+     Everything you need to edit is in the EDIT ME block below.
+  --------------------------------------------------------------- */
+  :root{
+    --ink:        #FFF3E4;
+    --ink-dim:    #C9AF97;
+    --ember:      #FF6B2C;
+    --ember-deep: #D93B0B;
+    --cedar:      #C98A4B;
+    --char:       #14100E;
+    --char-2:     #1E1815;
+    --line:       rgba(201,138,75,.28);
+    --display: 'Anton', 'Haettenschweiler', 'Impact', sans-serif;
+    --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--char); color:var(--ink);
+    font-family:var(--body); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{ /* heat glow */
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(60rem 40rem at 50% -10%, rgba(255,107,44,.20), transparent 65%),
+      radial-gradient(40rem 30rem at 10% 40%, rgba(217,59,11,.10), transparent 70%);
+  }
+  .wrap{position:relative; z-index:1; max-width:940px; margin:0 auto; padding:0 24px}
+  section{padding:76px 0}
+
+  /* ---------- type ---------- */
+  h1,h2{font-family:var(--display); font-weight:400; text-transform:uppercase;
+        letter-spacing:.005em; line-height:.92; margin:0}
+  h1{font-size:clamp(3.2rem, 12vw, 7.4rem)}
+  h2{font-size:clamp(2rem, 6vw, 3.4rem)}
+  .eyebrow{
+    font-family:var(--body); font-weight:700; font-size:.78rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ember); margin:0 0 18px;
+  }
+  .lead{font-size:clamp(1.1rem,2.4vw,1.35rem); color:var(--ink-dim); max-width:34em; margin:22px 0 0}
+  .lead strong{color:var(--ink); font-weight:600}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:64px; padding-bottom:56px}
+  .flame{font-size:2.4rem; line-height:1; margin-bottom:8px}
+  .hero h1 span{display:block}
+  .hero h1 .hot{
+    background:linear-gradient(180deg,#FFC46B 0%,var(--ember) 55%,var(--ember-deep) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* ---------- detail cards ---------- */
+  .details{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:38px 0 0}
+  .card{
+    background:var(--char-2); border:1px solid var(--line); border-radius:14px; padding:18px 20px;
+  }
+  .card .k{font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--cedar); font-weight:700}
+  .card .v{font-family:var(--display); font-size:1.5rem; text-transform:uppercase; margin-top:7px; line-height:1.05}
+  .card .v.tbd{color:var(--ink-dim)}
+  .card .note{font-size:.82rem; color:var(--ink-dim); margin-top:5px}
+
+  /* ---------- countdown ---------- */
+  .countdown{display:flex; gap:10px; margin-top:24px; flex-wrap:wrap}
+  .unit{
+    background:linear-gradient(180deg, rgba(255,107,44,.14), rgba(255,107,44,.04));
+    border:1px solid var(--line); border-radius:12px; padding:12px 0; text-align:center; flex:1; min-width:74px;
+  }
+  .unit b{display:block; font-family:var(--display); font-size:2rem; line-height:1; color:var(--ink)}
+  .unit small{font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--cedar); font-weight:700}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-block; background:var(--ember); color:#1A0C05; text-decoration:none;
+    font-weight:700; font-size:1rem; letter-spacing:.02em;
+    padding:16px 30px; border-radius:999px; border:0; cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .btn:hover{background:#FF8347; transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn.block{display:block; width:100%; font-size:1.05rem; padding:18px}
+  .btn:disabled{opacity:.6; cursor:wait}
+  .hero .btn{margin-top:34px}
+
+  /* ---------- photo ---------- */
+  .photo{
+    position:relative; border-radius:18px; overflow:hidden;
+    border:1px solid var(--line); background:var(--char-2); margin-top:8px;
+  }
+  .photo img{display:block; width:100%; height:auto}
+  .photo .placeholder{
+    aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; text-align:center; color:var(--ink-dim); padding:24px;
+    background:repeating-linear-gradient(45deg, #1E1815 0 14px, #221B17 14px 28px);
+  }
+  .photo .placeholder .big{font-size:2rem}
+  .photo .placeholder code{color:var(--cedar); font-size:.85rem}
+  .caption{color:var(--ink-dim); font-size:.9rem; margin-top:12px; text-align:center}
+
+  /* ---------- prize ---------- */
+  .prize{
+    border:1px solid var(--line); border-radius:20px; padding:44px 36px; text-align:center;
+    background:linear-gradient(180deg, rgba(255,107,44,.10), rgba(20,16,14,0));
+  }
+  .prize .lead{margin-left:auto; margin-right:auto}
+
+  /* ---------- form ---------- */
+  .signup{
+    background:var(--char-2); border:1px solid var(--line); border-radius:20px; padding:36px 32px;
+  }
+  .field{margin-top:18px}
+  label{display:block; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+        color:var(--cedar); font-weight:700; margin-bottom:8px}
+  input[type=text],input[type=email],input[type=tel]{
+    width:100%; background:#0F0C0A; border:1px solid var(--line); border-radius:11px;
+    padding:15px 16px; color:var(--ink); font-family:var(--body); font-size:1rem;
+  }
+  input::placeholder{color:#6E5B4C}
+  input:focus{outline:none; border-color:var(--ember); box-shadow:0 0 0 3px rgba(255,107,44,.16)}
+  .check{
+    display:flex; gap:14px; align-items:center; margin-top:24px; cursor:pointer;
+    background:#0F0C0A; border:1px solid var(--line); border-radius:11px; padding:16px;
+  }
+  .check input{width:22px; height:22px; accent-color:var(--ember); flex:0 0 auto; cursor:pointer}
+  .check span{font-family:var(--display); text-transform:uppercase; font-size:1.05rem; letter-spacing:.02em; line-height:1.15}
+  .signup .btn{margin-top:24px}
+  .msg{margin-top:16px; font-size:.95rem; display:none}
+  .msg.show{display:block}
+  .msg.err{color:#FF8B6B}
+  .done{text-align:center; padding:20px 0}
+  .done .big{font-size:3rem; line-height:1}
+  .done h3{font-family:var(--display); text-transform:uppercase; font-size:2rem; margin:12px 0 6px; font-weight:400}
+  .done p{color:var(--ink-dim); margin:0}
+
+  footer{border-top:1px solid var(--line); padding:34px 0 60px; color:var(--ink-dim); font-size:.86rem}
+
+  @media (max-width:640px){
+    section{padding:56px 0}
+    .details{grid-template-columns:1fr}
+    .signup,.prize{padding:28px 22px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="flame">🔥</div>
+    <p class="eyebrow">A 24 hour challenge</p>
+    <h1>
+      <span>The Great</span>
+      <span class="hot">Sauna Race</span>
+    </h1>
+    <p class="lead">
+      Hi, we're 5 friends doing a 24 hour challenge to build a <strong>free sauna</strong>.
+      Then we're giving it away to whoever can beat us to the finish line.
+    </p>
+
+    <div class="details">
+      <div class="card">
+        <div class="k">When</div>
+        <div class="v">Fri, Aug 28</div>
+        <div class="note">12:00 PM sharp</div>
+      </div>
+      <div class="card">
+        <div class="k">Where</div>
+        <div class="v tbd">Location TBD</div>
+        <div class="note">We'll email you the spot</div>
+      </div>
+      <div class="card">
+        <div class="k">Prize</div>
+        <div class="v">The Sauna</div>
+        <div class="note">First to finish keeps it</div>
+      </div>
+    </div>
+
+    <div class="countdown" id="countdown" data-race="2026-08-28T12:00:00">
+      <div class="unit"><b id="cd-d">--</b><small>Days</small></div>
+      <div class="unit"><b id="cd-h">--</b><small>Hours</small></div>
+      <div class="unit"><b id="cd-m">--</b><small>Minutes</small></div>
+      <div class="unit"><b id="cd-s">--</b><small>Seconds</small></div>
+    </div>
+
+    <a class="btn" href="#signup">Sign me up →</a>
+  </section>
+
+  <!-- ============ PHOTO ============ -->
+  <section>
+    <p class="eyebrow">The five of us</p>
+    <div class="photo">
+      <!--
+        EDIT ME: drop your group photo next to this file and replace the whole
+        <div class="placeholder"> below with:
+        <img src="us.jpg" alt="The five of us">
+      -->
+      <div class="placeholder">
+        <div class="big">📸</div>
+        <div>Group photo goes here</div>
+        <code>replace with &lt;img src="us.jpg"&gt;</code>
+      </div>
+    </div>
+    <p class="caption">Five friends, one weekend, zero prior sauna experience.</p>
+  </section>
+
+  <!-- ============ PRIZE ============ -->
+  <section>
+    <div class="prize">
+      <p class="eyebrow">The deal</p>
+      <h2>Be the first to<br>finish the race</h2>
+      <p class="lead">And the sauna is yours. We build it, you win it, we go home and sleep.</p>
+      <a class="btn" href="#signup">Enter the race</a>
+    </div>
+  </section>
+
+  <!-- ============ SIGNUP ============ -->
+  <section id="signup">
+    <div class="signup">
+      <p class="eyebrow">Sign up</p>
+      <h2>Claim your<br>starting spot</h2>
+
+      <form id="form" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555" autocomplete="tel" required>
+        </div>
+
+        <label class="check" for="ready">
+          <input id="ready" name="ready" type="checkbox" required>
+          <span>I'm ready to win a free sauna</span>
+        </label>
+
+        <button class="btn block" type="submit" id="submit">Count me in 🔥</button>
+        <p class="msg err" id="msg"></p>
+      </form>
+
+      <div class="done" id="done" style="display:none">
+        <div class="big">🔥</div>
+        <h3>You're in</h3>
+        <p>We'll email you the location before Friday at noon. Bring a towel.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    The Great Sauna Race · Friday, August 28 · 12:00 PM · Location TBD
+  </footer>
+</div>
+
+<script>
+/* =================================================================
+   EDIT ME  ---  paste your Google Apps Script Web App URL here.
+   Setup steps are in SETUP.md next to this file. The URL looks like:
+   https://script.google.com/macros/s/AKfycb...../exec
+   Leave it as "" and signups only save in the visitor's browser.
+   ================================================================= */
+const FORM_ENDPOINT = "";
+
+/* ---- countdown ---- */
+(function(){
+  const el = document.getElementById('countdown');
+  const target = new Date(el.dataset.race).getTime();
+  const pad = n => String(n).padStart(2,'0');
+  function tick(){
+    let diff = target - Date.now();
+    if (diff <= 0){ el.innerHTML = '<div class="unit" style="flex:1"><b>GO!</b><small>The race is on</small></div>'; return; }
+    const s = Math.floor(diff/1000);
+    document.getElementById('cd-d').textContent = pad(Math.floor(s/86400));
+    document.getElementById('cd-h').textContent = pad(Math.floor(s%86400/3600));
+    document.getElementById('cd-m').textContent = pad(Math.floor(s%3600/60));
+    document.getElementById('cd-s').textContent = pad(s%60);
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+
+/* ---- signup ---- */
+(function(){
+  const form = document.getElementById('form');
+  const msg  = document.getElementById('msg');
+  const btn  = document.getElementById('submit');
+
+  function fail(text){ msg.textContent = text; msg.classList.add('show'); }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    msg.classList.remove('show');
+
+    const data = {
+      name:  form.name.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      ready: form.ready.checked,
+      signed_up_at: new Date().toISOString()
+    };
+
+    if (!data.name)  return fail('We need a name to put on the starting line.');
+    if (!/^\S+@\S+\.\S+$/.test(data.email)) return fail('That email looks off. Mind checking it?');
+    if (data.phone.replace(/\D/g,'').length < 7) return fail('That phone number looks too short.');
+    if (!data.ready) return fail('You have to check the box. Are you ready to win a free sauna or not?');
+
+    btn.disabled = true;
+    btn.textContent = 'Signing you up...';
+
+    // Local backup so nothing is ever lost, even if the network hiccups.
+    try {
+      const saved = JSON.parse(localStorage.getItem('sauna-signups') || '[]');
+      saved.push(data);
+      localStorage.setItem('sauna-signups', JSON.stringify(saved));
+    } catch(_){}
+
+    if (FORM_ENDPOINT){
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: {'Content-Type':'text/plain;charset=utf-8'}, // simple request: no CORS preflight
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error(res.status);
+      } catch(err){
+        btn.disabled = false;
+        btn.textContent = 'Count me in 🔥';
+        return fail('Something broke on our end. Try again in a second?');
+      }
+    }
+
+    form.style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+  });
+})();
+</script>
+</body>
+</html>
