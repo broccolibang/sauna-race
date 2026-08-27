@@ -163,6 +163,12 @@
     font-family:var(--display); text-transform:uppercase;
     font-size:clamp(.95rem,3.6vw,1.05rem); letter-spacing:.02em; line-height:1.15;
   }
+  .check.waiver{margin-top:12px; align-items:flex-start}
+  .check.waiver span{
+    font-family:var(--body); text-transform:none; font-weight:500;
+    font-size:.93rem; line-height:1.4; letter-spacing:0; color:var(--ink-dim);
+    padding-top:2px;
+  }
   .signup .btn{margin-top:22px}
   .msg{margin-top:14px; font-size:.93rem; display:none}
   .msg.show{display:block}
@@ -267,6 +273,11 @@
           <span>I'm ready to win a free sauna</span>
         </label>
 
+        <label class="check waiver" for="waiver">
+          <input id="waiver" name="waiver" type="checkbox" required>
+          <span>I am participating on my own accord, and I release all liability</span>
+        </label>
+
         <button class="btn block" type="submit" id="submit">Count me in</button>
         <p class="msg err" id="msg"></p>
       </form>
@@ -337,6 +348,7 @@ const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
       email: form.email.value.trim(),
       phone: form.phone.value.trim(),
       ready: form.ready.checked,
+      waiver: form.waiver.checked,
       signed_up_at: new Date().toISOString()
     };
 
@@ -344,6 +356,7 @@ const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
     if (!/^\S+@\S+\.\S+$/.test(data.email)) return fail('That email looks off. Mind checking it?');
     if (data.phone.replace(/\D/g,'').length < 7) return fail('That phone number looks too short.');
     if (!data.ready) return fail('You have to check the box. Are you ready to win a free sauna or not?');
+    if (!data.waiver) return fail('You need to accept the liability release to take part.');
 
     btn.disabled = true;
     btn.textContent = 'Signing you up...';
@@ -369,7 +382,8 @@ const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
             name:  data.name,
             email: data.email,
             phone: data.phone,
-            ready: data.ready
+            ready: data.ready,
+            waiver: data.waiver
           })
         });
         if (!res.ok) throw new Error(res.status + ' ' + await res.text());
