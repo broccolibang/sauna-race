@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Great Sauna Race</title>
-<meta name="description" content="5 friends, 1 uni project, 24 hours, one free sauna. Race us Friday, August 28th at 12:00 PM Helsinki time.">
+<meta name="description" content="5 friends, 1 uni project, 24 hours, one free sauna. Race us Friday, August 28th at 12:00 PM at Eiran ranta, Helsinki.">
 <meta property="og:title" content="The Great Sauna Race">
 <meta property="og:description" content="Be the first to finish the race and you win the sauna.">
 <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
   /* ---------------------------------------------------------------
      THE GREAT SAUNA RACE
      Things you'll want to edit:
-       - LOCATION: search "Location TBD" (2 spots)
+       - LOCATION: search "Eiran ranta" (3 spots)
        - SAUNA PHOTO: search "SAUNA PHOTO"
        - FORM: search "FORM_ENDPOINT" (see SETUP.md)
   --------------------------------------------------------------- */
@@ -95,9 +95,9 @@
   .strip .v{
     font-family:var(--display); text-transform:uppercase; line-height:1.05;
     font-size:clamp(.82rem,3.9vw,1.2rem); margin-top:5px;
-    white-space:nowrap; /* keep "Fri Aug 28" on one line on narrow phones */
   }
-  .strip .v.tbd{color:var(--ink-dim)}
+  /* the date is the one value that must not re-wrap on narrow phones */
+  .strip .v.when{white-space:nowrap}
   .tz{font-size:.72rem; color:var(--ink-dim); text-align:center;
       margin:9px 0 0; letter-spacing:.03em}
 
@@ -205,11 +205,11 @@
     <div class="strip">
       <div>
         <div class="k">When</div>
-        <div class="v">Fri Aug 28<br>12:00 PM</div>
+        <div class="v when">Fri Aug 28<br>12:00 PM</div>
       </div>
       <div>
         <div class="k">Where</div>
-        <div class="v tbd">Location<br>TBD</div>
+        <div class="v">Eiran ranta<br>Eira strand</div>
       </div>
       <div>
         <div class="k">Prize</div>
@@ -262,14 +262,14 @@
 
       <div class="done" id="done" style="display:none">
         <h3>You're in</h3>
-        <p>We'll email you the location before Friday at noon. Bring a towel.</p>
+        <p>Friday at noon, Eiran ranta. We'll email you the details. Bring a towel.</p>
       </div>
     </div>
   </section>
 
   <footer>
     The Great Sauna Race<br>
-    Friday, August 28 &middot; 12:00 PM Helsinki time &middot; Location TBD
+    Friday, August 28 &middot; 12:00 PM Helsinki time &middot; Eiran ranta / Eira strand
   </footer>
 </div>
 
