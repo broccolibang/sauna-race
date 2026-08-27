@@ -97,8 +97,8 @@
     font-size:clamp(.95rem,3.9vw,1.2rem); margin-top:5px;
   }
   .strip .v.tbd{color:var(--ink-dim)}
-  .strip .tz{font-size:clamp(.5rem,2vw,.58rem); color:var(--ink-dim);
-             margin-top:4px; letter-spacing:.04em}
+  .tz{font-size:.72rem; color:var(--ink-dim); text-align:center;
+      margin:9px 0 0; letter-spacing:.03em}
 
   /* ---------- countdown ---------- */
   .countdown{display:flex; gap:8px; margin-top:14px}
@@ -205,7 +205,6 @@
       <div>
         <div class="k">When</div>
         <div class="v">Fri Aug 28<br>12:00 PM</div>
-        <div class="tz">Helsinki time</div>
       </div>
       <div>
         <div class="k">Where</div>
@@ -216,6 +215,7 @@
         <div class="v">The<br>Sauna</div>
       </div>
     </div>
+    <p class="tz">All times Helsinki (EEST)</p>
 
     <div class="countdown" id="countdown" data-race="2026-08-28T12:00:00+03:00">
       <div class="unit"><b id="cd-h">--</b><small>Hours</small></div>
