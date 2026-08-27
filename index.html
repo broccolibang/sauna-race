@@ -163,7 +163,7 @@
   .msg{margin-top:14px; font-size:.93rem; display:none}
   .msg.show{display:block}
   .msg.err{color:#FF8B6B}
-  .done{text-align:center; padding:18px 0}
+  .done{text-align:center; padding:8px 0}
   .done h3{font-family:var(--display); text-transform:uppercase; font-size:1.9rem;
            margin:0 0 6px; font-weight:400}
   .done p{color:var(--ink-dim); margin:0}
@@ -236,6 +236,7 @@
   <!-- ============ SIGNUP ============ -->
   <section id="signup">
     <div class="signup">
+      <div id="signup-live">
       <p class="eyebrow">Sign up</p>
       <h2>Claim your<br>starting spot</h2>
 
@@ -265,6 +266,7 @@
         <button class="btn block" type="submit" id="submit">Count me in</button>
         <p class="msg err" id="msg"></p>
       </form>
+      </div><!-- /#signup-live -->
 
       <div class="done" id="done" style="display:none">
         <h3>You're in</h3>
@@ -374,7 +376,7 @@ const FORM_ENDPOINT = SUPABASE_URL + "/rest/v1/signups";
       }
     }
 
-    form.style.display = 'none';
+    document.getElementById('signup-live').style.display = 'none';
     document.getElementById('done').style.display = 'block';
   });
 })();
